@@ -1,0 +1,49 @@
+﻿
+OLd Code
+[HttpPost]
+        public IActionResult Create99(Continent continent)
+        {
+            if(continent.ContinentID==0)
+            {
+                ModelState.AddModelError("", "Select Continent");
+
+            }
+
+
+            int SelectValue = continent.ContinentID;
+
+
+
+            List<Continent> continentlist = new List<Continent>();
+            continentlist = (from v in _context.Continent select v).ToList();
+            continentlist.Insert(0, new Continent { ContinentID = 0, ContinentName = "Select" });
+
+            ViewBag.ContinentList = continentlist;
+
+
+            //var DivisionListResult = new SelectList(_context.Continent.ToList(), "ContinentID", "ContinentName");
+            //ViewData["ContinentList"] = DivisionListResult;
+
+            return View();
+        }
+
+
+//List<Continent> continentlist = new List<Continent>();
+//continentlist = (from v in _context.Continent select v).ToList();
+//List<Continent>  continentlist = _context.Continent.ToList();
+//continentlist.Insert(0, new Continent { ContinentID = 0, ContinentName = "Select" });]
+
+//var DivisionListResult = new SelectList(_context.Continent.ToList(), "ContinentID", "ContinentName");
+//ViewData["ContinentList"] = DivisionListResult;
+
+
+
+<label style="color:maroon;"> @ViewBag.ErrorContinentID </label>
+                    <br /><br />
+
+//var count3 = (from v in _context.Continent where v.ContinentID == continent.ContinentID select v).ToList();
+               
+
+
+
+
