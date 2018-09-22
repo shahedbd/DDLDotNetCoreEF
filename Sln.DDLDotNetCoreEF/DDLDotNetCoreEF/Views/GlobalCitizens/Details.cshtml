@@ -1,0 +1,66 @@
+﻿@model DDLDotNetCoreEF.Models.GlobalCitizen
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GlobalCitizen</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CountryName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CountryName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ContinentCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ContinentCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreationUser)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreationDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdateUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdateUser)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdateDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdateDateTime)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

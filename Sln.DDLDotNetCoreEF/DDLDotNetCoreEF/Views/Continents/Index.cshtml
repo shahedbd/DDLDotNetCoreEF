@@ -1,4 +1,4 @@
-﻿@model DDLDotNetCoreEF.Models.Continent
+﻿@model IEnumerable<DDLDotNetCoreEF.Models.Continent>
 @{
     ViewData["Title"] = "Index";
 }
@@ -6,21 +6,43 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="glyphicon glyphicon-plus"></i>Create New
+    </a>
 </p>
 
 @{
-    <form asp-controller="Home" asp-action="Continents" method="post" class="form-horizontal" role="form">
-        <div class="form-group">
-            <div class="row">
-                <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                    <label asp-for="ContinentName" class="control-label"></label>
-                    <select asp-for="ContinentID"
-                            class="form-control" 
-                            asp-items="@(new SelectList(@ViewBag.ContinentList,"ContinentID", "ContinentName"))"></select>
-                </div>
-            </div>
-        </div>     
+    <form asp-controller="Home" asp-action="Continents" method="post" class="form-horizontal" role="form">      
+        <table class="table table-bordered table-striped table-condensed" border="1">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ContinentName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContinentName)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.ContinentID" class="btn btn-success">
+                                <i class="glyphicon glyphicon-pencil"></i>Edit
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.ContinentID" class="btn btn-info">
+                                <i class="glyphicon glyphicon-eye-open"></i>Details
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.ContinentID" class="btn btn-danger">
+                                <i class="glyphicon glyphicon-trash"></i>Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </form>
 }
