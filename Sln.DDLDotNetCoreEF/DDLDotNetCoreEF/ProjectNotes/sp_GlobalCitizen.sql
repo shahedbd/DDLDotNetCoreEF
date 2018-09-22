@@ -7,16 +7,17 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 ALTER PROC [dbo].[sp_GlobalCitizen] (@ID bigint = NULL,
-@Name nvarchar = NULL,
-@CountryName nvarchar = NULL,
-@Capital nvarchar = NULL,
+@Name nvarchar(150) = NULL,
+@CountryName nvarchar(150) = NULL,
+@Capital nvarchar(150) = NULL,
 @ContinentCode tinyint = NULL,
-@Email nchar(10) = NULL,
+@Email nvarchar(150) = NULL,
 @Status tinyint = NULL,
-@CreationUser nvarchar = NULL,
+@CreationUser nvarchar(150) = NULL,
 @CreationDateTime datetime = NULL,
-@LastUpdateUser nvarchar = NULL,
+@LastUpdateUser nvarchar(150) = NULL,
 @LastUpdateDateTime datetime = NULL,
+@searchString nvarchar(150) = NULL,
 
 @Msg nvarchar(max) = NULL OUT,
 @pOptions int)
@@ -114,9 +115,10 @@ AS
     SELECT G.ID, G.Name,
 	 Case when G.Gender = '0' then 'Male' when G.Gender = '1' then 'Female' else 'Other' end Gender,
 	G.CountryName,C.ContinentName,G.CreationDateTime FROM GlobalCitizen as G inner join Continent as C
-	on G.ContinentCode=C.ContinentID;
+	on G.ContinentCode=C.ContinentID
+	where ((@searchString IS NULL or @searchString='') or G.Name like '%'+ @searchString + '%')
     IF (@@ROWCOUNT = 0)
       SET @Msg = 'Data Not Found';
   END
   --End of Select All GlobalCitizen 
-
+  
