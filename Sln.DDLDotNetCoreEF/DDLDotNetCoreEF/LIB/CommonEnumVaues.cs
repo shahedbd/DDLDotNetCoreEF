@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DDLDotNetCoreEF.LIB
+﻿namespace DDLDotNetCoreEF.LIB
 {
     public class CommonEnumVaues
     {
@@ -11,6 +6,12 @@ namespace DDLDotNetCoreEF.LIB
         {
             Active = 0,
             InActive = 1
+        }
+
+        public enum Gender
+        {
+            Male = 0,
+            Female = 1
         }
     }
 }

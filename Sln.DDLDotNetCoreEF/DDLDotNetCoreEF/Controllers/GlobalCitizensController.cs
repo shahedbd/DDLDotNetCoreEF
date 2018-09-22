@@ -1,12 +1,13 @@
-﻿using System;
+﻿using DDLDotNetCoreEF.LIB;
+using DDLDotNetCoreEF.Models;
+using DDLDotNetCoreEF.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DDLDotNetCoreEF.Models;
-using DDLDotNetCoreEF.LIB;
 
 namespace DDLDotNetCoreEF.Controllers
 {
@@ -20,15 +21,41 @@ namespace DDLDotNetCoreEF.Controllers
         }
 
         // GET: GlobalCitizens
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string searchString)
         {
-            //var innerJoinQuery =
-                //from gctgn in _context.GlobalCitizen
-                //join cont in _context.Continent on gctgn.ContinentCode equals cont.ContinentID
-                //select new { gctgn.Name, gctgn.CountryName, cont.ContinentName, gctgn.CreationDateTime };
+            List<GlobalCitizenVM> result = null;
+            var p1 = new SqlParameter("@pOptions", 6);
+            var p2 = new SqlParameter("@searchString", searchString);
 
-            return View(await _context.GlobalCitizen.ToListAsync());
+
+            if (searchString != null)
+            {
+                result = _context.GlobalCitizenVM.FromSql("EXECUTE sp_GlobalCitizen @pOptions=6,@searchString='" + searchString + "'").ToList();
+            }
+            else
+            {
+                result = _context.GlobalCitizenVM.FromSql("EXECUTE sp_GlobalCitizen @pOptions=6").ToList();
+            }
+
+            return View(result);
         }
+
+
+        public async Task<IActionResult> IndexSSS(string searchString)
+        {
+            //List<GlobalCitizenVM> result = _context.GlobalCitizenVM.FromSql("EXECUTE sp_GlobalCitizen @pOptions=6;").ToList();
+
+            var globalCitizen = from m in _context.GlobalCitizen select new { m.Name, m.Gender };
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                globalCitizen = globalCitizen.Where(s => s.Name.Contains(searchString));
+            }
+
+            return View(await globalCitizen.ToListAsync());
+        }
+
+
 
         // GET: GlobalCitizens/Details/5
         public async Task<IActionResult> Details(long? id)
@@ -66,8 +93,12 @@ namespace DDLDotNetCoreEF.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ddlContinentCode = Request.Form["ContinentCode"].ToString();
+                var ddlContinentCode = Request.Form["ContinentName"].ToString();
+                var rdoGender = Request.Form["Gender"].ToString();
+
+
                 globalCitizen.ContinentCode = Convert.ToByte(ddlContinentCode);
+                globalCitizen.Gender = Convert.ToByte(rdoGender);
                 globalCitizen.Status = (int)CommonEnumVaues.UserStatus.Active;
 
                 globalCitizen.CreationUser = "Admin";
@@ -120,8 +151,10 @@ namespace DDLDotNetCoreEF.Controllers
                 try
                 {
                     var ddlContinentCode = Request.Form["ContinentCode"].ToString();
+                    var rdoGender = Request.Form["Gender"].ToString();
+
                     globalCitizen.ContinentCode = Convert.ToByte(ddlContinentCode);
-                    
+                    globalCitizen.Gender = Convert.ToByte(rdoGender);
 
                     globalCitizen.LastUpdateUser = "Admin in Update Mode";
                     globalCitizen.LastUpdateDateTime = DateTime.Now;

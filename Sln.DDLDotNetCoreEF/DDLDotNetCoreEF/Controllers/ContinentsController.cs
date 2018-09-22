@@ -1,6 +1,7 @@
 ﻿using DDLDotNetCoreEF.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ namespace DDLDotNetCoreEF.Controllers
                 else
                 {
                     //TempData["ErrorMSG"] = "Access Denied! Wrong Credential";
-                    ViewBag.ErrorContinentID = "This Continent ID: "+ continent.ContinentID + " alredy exits!";
+                    ViewBag.ErrorContinentID = "This Continent ID: " + continent.ContinentID + " alredy exits!";
                 }
 
             }
@@ -99,31 +100,45 @@ namespace DDLDotNetCoreEF.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(byte id, [Bind("ContinentID,ContinentName")] Continent continent)
         {
-            if (id != continent.ContinentID)
-            {
-                return NotFound();
-            }
+            if (id != continent.ContinentID) return NotFound();
 
-            if (ModelState.IsValid)
+
+            using (var transaction = _context.Database.BeginTransaction())
             {
                 try
                 {
-                    _context.Update(continent);
-                    await _context.SaveChangesAsync();
+
+                    if (ModelState.IsValid)
+                    {
+                        try
+                        {
+                            _context.Update(continent);
+                            await _context.SaveChangesAsync();
+                        }
+                        catch (DbUpdateConcurrencyException)
+                        {
+                            if (!ContinentExists(continent.ContinentID))
+                            {
+                                return NotFound();
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+                        transaction.Commit();
+                        return RedirectToAction(nameof(Index));
+                    }
+
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!ContinentExists(continent.ContinentID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // TODO: Handle failure
+                    transaction.Rollback();
+                    throw ex;
                 }
-                return RedirectToAction(nameof(Index));
             }
+
             return View(continent);
         }
 
@@ -136,8 +151,7 @@ namespace DDLDotNetCoreEF.Controllers
                 return NotFound();
             }
 
-            var continent = await _context.Continent
-                .FirstOrDefaultAsync(m => m.ContinentID == id);
+            var continent = await _context.Continent.FirstOrDefaultAsync(m => m.ContinentID == id);
             if (continent == null)
             {
                 return NotFound();

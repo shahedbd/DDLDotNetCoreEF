@@ -1,5 +1,5 @@
 ﻿
-OLd Code
+#OLd Code
 [HttpPost]
         public IActionResult Create99(Continent continent)
         {
@@ -44,6 +44,39 @@ OLd Code
 //var count3 = (from v in _context.Continent where v.ContinentID == continent.ContinentID select v).ToList();
                
 
+
+
+//var innerJoinQuery =
+//from gctgn in _context.GlobalCitizen
+//join cont in _context.Continent on gctgn.ContinentCode equals cont.ContinentID
+//select new { gctgn.Name, gctgn.CountryName, cont.ContinentName, gctgn.CreationDateTime };
+
+//var students = _context.GlobalCitizenVM.FromSql("sp_GlobalCitizen @pOptions", "6").ToList();
+//var students2 = _context.Database.ExecuteSqlCommand("sp_GlobalCitizen @pOptions", parameters: new[] { "6" });
+
+//var param = new SqlParameter("@pOptions", 6);
+//var students3 = _context.GlobalCitizenVM.FromSql("sp_GlobalCitizen @pOptions=6").ToList();
+
+//var students4 = _context.GlobalCitizenVM.FromSql("sp_GlobalCitizen @pOptions", "6").ToList();
+
+//var results = _context.Database.SqlQuery<int>("exec sp_GetStaff @custid",new SqlParameter("custid", customerNumber)).ToList<int>();
+
+
+//var p1 = new SqlParameter("@pOptions", 6);
+//var abc= _context.GlobalCitizenVM.FromSql("EXEC sp_GlobalCitizen @pOptions",p1).FirstOrDefault();
+
+//var p1 = new SqlParameter("@pOptions", 6);
+//List<GlobalCitizenVM> lsit = _context.GlobalCitizenVM.FromSql<GlobalCitizenVM>("EXECUTE sp_GlobalCitizen @pOptions", p1).ToList();
+
+//List<GlobalCitizenVM> lsit = abc;
+
+//var result = _context.GlobalCitizenVM.FromSql<GlobalCitizenVM>("EXECUTE sp_GlobalCitizen @pOptions=6").ToList();
+
+//var product = _context.GlobalCitizenVM.FromSql("EXECUTE sp_GlobalCitizen @pOptions", 6).ToListAsync();
+
+//var user = new SqlParameter("pOptions", 6);
+//var blogs = _context.GlobalCitizenVM.FromSql<GlobalCitizenVM>("EXECUTE dbo.sp_GlobalCitizen @pOptions", user);
+//List<GlobalCitizenVM> lsit = blogs.ToList<GlobalCitizenVM>();
 
 
 

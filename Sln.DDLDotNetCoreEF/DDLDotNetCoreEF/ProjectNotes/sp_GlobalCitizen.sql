@@ -1,6 +1,6 @@
 ﻿USE [DevTest]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GlobalCitizen]    Script Date: 9/22/2018 4:57:47 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_GlobalCitizen]    Script Date: 9/23/2018 2:48:01 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -111,7 +111,9 @@ AS
   --Select GlobalCitizen and Continent by ID
   IF (@pOptions = 6)
   BEGIN
-    SELECT G.Name,G.CountryName,C.ContinentName,G.CreationDateTime FROM GlobalCitizen as G inner join Continent as C
+    SELECT G.ID, G.Name,
+	 Case when G.Gender = '0' then 'Male' when G.Gender = '1' then 'Female' else 'Other' end Gender,
+	G.CountryName,C.ContinentName,G.CreationDateTime FROM GlobalCitizen as G inner join Continent as C
 	on G.ContinentCode=C.ContinentID;
     IF (@@ROWCOUNT = 0)
       SET @Msg = 'Data Not Found';
