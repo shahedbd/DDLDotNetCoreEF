@@ -1,6 +1,72 @@
 ﻿USE [DevTest]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GlobalCitizen]    Script Date: 9/23/2018 2:48:01 AM ******/
+
+/****** Object:  Table [dbo].[GlobalCitizen]    Script Date: 9/26/2018 5:34:36 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[GlobalCitizen](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](150) NULL,
+	[CountryName] [nvarchar](150) NULL,
+	[Capital] [nvarchar](50) NULL,
+	[ContinentCode] [tinyint] NULL,
+	[Email] [nchar](10) NULL,
+	[Gender] [tinyint] NULL,
+	[Status] [tinyint] NULL,
+	[CreationUser] [nvarchar](50) NULL,
+	[CreationDateTime] [datetime] NULL,
+	[LastUpdateUser] [nvarchar](50) NULL,
+	[LastUpdateDateTime] [datetime] NULL,
+ CONSTRAINT [PK_GlobalCitizen] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+
+
+
+
+
+
+USE [DevTest]
+GO
+
+/****** Object:  Table [dbo].[Continent]    Script Date: 9/26/2018 5:34:01 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Continent](
+	[ContinentID] [tinyint] NOT NULL,
+	[ContinentName] [nvarchar](50) NULL,
+ CONSTRAINT [PK_Continent] PRIMARY KEY CLUSTERED 
+(
+	[ContinentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+
+
+
+
+
+
+USE [DevTest]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GlobalCitizen]    Script Date: 9/26/2018 4:46:31 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -117,8 +183,12 @@ AS
 	G.CountryName,C.ContinentName,G.CreationDateTime FROM GlobalCitizen as G inner join Continent as C
 	on G.ContinentCode=C.ContinentID
 	where ((@searchString IS NULL or @searchString='') or G.Name like '%'+ @searchString + '%')
+	or (G.CountryName like '%'+ @searchString + '%')
+	or (C.ContinentName like '%'+ @searchString + '%')
+	or (G.CreationDateTime like '%'+ @searchString + '%')
     IF (@@ROWCOUNT = 0)
       SET @Msg = 'Data Not Found';
   END
   --End of Select All GlobalCitizen 
-  
+
+
