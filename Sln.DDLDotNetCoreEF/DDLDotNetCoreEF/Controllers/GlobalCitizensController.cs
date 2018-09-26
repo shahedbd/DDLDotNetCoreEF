@@ -36,7 +36,7 @@ namespace DDLDotNetCoreEF.Controllers
             {
                 result = _context.GlobalCitizenVM.FromSql("EXECUTE sp_GlobalCitizen @pOptions=6").ToList();
             }
-
+            TempData["searchString"] = searchString;
             return View(result);
         }
 
@@ -108,7 +108,10 @@ namespace DDLDotNetCoreEF.Controllers
                 globalCitizen.LastUpdateDateTime = null;
 
                 _context.Add(globalCitizen);
-                await _context.SaveChangesAsync();
+                var abc = await _context.SaveChangesAsync();
+
+                //TempData["ErrorMSG"] = "Access Denied! Wrong Credential";
+                TempData["AddNewSuccessMessage"] = "Global citizen  added successfully. Citizen Name: " + globalCitizen.Name;
                 return RedirectToAction(nameof(Index));
             }
             return View(globalCitizen);

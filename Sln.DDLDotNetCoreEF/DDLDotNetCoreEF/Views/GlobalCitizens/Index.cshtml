@@ -14,7 +14,7 @@
 
 <form asp-controller="GlobalCitizens" asp-action="Index">
     <p>
-        Title: <input type="text" name="SearchString">
+        Title: <input type="text" name="SearchString" value=@TempData["searchString"]>
         <input type="submit" value="Filter" />
     </p>
 </form>
@@ -44,34 +44,42 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CountryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContinentName)
-            </td>
-            <td>
-                @Convert.ToDateTime(item.CreationDateTime).ToString("MM/dd/yyyy")
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-success">
-                    <i class="glyphicon glyphicon-pencil"></i>Edit
-                </a>
-                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info">
-                    <i class="glyphicon glyphicon-eye-open"></i>Details
-                </a>
-                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">
-                    <i class="glyphicon glyphicon-trash"></i>Delete
-                </a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContinentName)
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.CreationDateTime).ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-success">
+                        <i class="glyphicon glyphicon-pencil"></i>Edit
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info">
+                        <i class="glyphicon glyphicon-eye-open"></i>Details
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">
+                        <i class="glyphicon glyphicon-trash"></i>Delete
+                    </a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+
+@if (TempData["AddNewSuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p>@TempData["AddNewSuccessMessage"]</p>
+    </div>
+}
